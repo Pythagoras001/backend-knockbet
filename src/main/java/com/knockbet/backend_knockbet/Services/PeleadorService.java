@@ -1,9 +1,11 @@
 package com.knockbet.backend_knockbet.Services;
 
+import com.knockbet.backend_knockbet.Models.EstrucEncuentro.EstadoPelea;
 import com.knockbet.backend_knockbet.Models.Peleador.*;
 import com.knockbet.backend_knockbet.Models.dto.DtoEditPeleador;
 import com.knockbet.backend_knockbet.Models.dto.DtoPeleador;
 import com.knockbet.backend_knockbet.Reglas.MetricasDeScore;
+import com.knockbet.backend_knockbet.Repository.PeleaRepository;
 import com.knockbet.backend_knockbet.Repository.PeleadorRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -17,8 +19,7 @@ import java.util.UUID;
 public class PeleadorService {
 
     private final PeleadorRepository peleadorRepository;
-
-    private final PeleaService peleaService;
+    private final PeleaRepository peleaRepository;
 
     public void registrarPeleador(DtoPeleador dtoPeleador) throws Exception{
         try {
@@ -122,7 +123,9 @@ public class PeleadorService {
         try {
             Peleador peleador = obtenerPeladorId(idFigther);
             if (peleador.isEstadoActividad()){
-                if (peleaService.tienePeleasProgramadas(peleador)) throw new Exception("El peleador esta o tiene una pelea programada");
+                if (peleaRepository.existePeleaActiva(peleador,List.of(EstadoPelea.PROGRAMADA,EstadoPelea.EN_DUELO))){
+                    throw new Exception("El peleador esta o tiene una pelea programada");
+                }
             }
             peleador.setEstadoActividad(!peleador.isEstadoActividad());
 
