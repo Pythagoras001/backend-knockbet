@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/fighters")
@@ -41,5 +42,20 @@ public class PeleadorController {
                     .body(e.getMessage());
         }
     }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<?> cambiarEstadoDeActividad(@PathVariable UUID id){
+        try {
+            peleadorService.cambiarEstadoDeActividad(id);
+            return ResponseEntity.ok().build();
+
+        } catch (Exception e){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("No fue posible deshabilitar el peleador");
+        }
+    }
+
+
 
 }

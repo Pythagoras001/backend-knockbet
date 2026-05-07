@@ -4,16 +4,20 @@ import com.knockbet.backend_knockbet.Models.Peleador.*;
 import com.knockbet.backend_knockbet.Models.dto.DtoPeleador;
 import com.knockbet.backend_knockbet.Reglas.MetricasDeScore;
 import com.knockbet.backend_knockbet.Repository.PeleadorRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
 public class PeleadorService {
 
     private final PeleadorRepository peleadorRepository;
+
+    private final PeleaService peleaService;
 
     public void registrarPeleador(DtoPeleador dtoPeleador) throws Exception{
         try {
@@ -112,6 +116,29 @@ public class PeleadorService {
         }
     }
 
+    @Transactional
+    public void cambiarEstadoDeActividad(UUID idFigther) throws Exception{
+        try {
+            Peleador peleador = obtenerPeladorId(idFigther);
+            if (peleador.isEstadoActividad()){
+                if (peleaService.tienePeleasProgramadas(peleador)) throw new Exception("El peleador esta o tiene una pelea programada");
+            }
+            peleador.setEstadoActividad(!peleador.isEstadoActividad());
+
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
+    public Peleador obtenerPeladorId(UUID idFigther) throws Exception{
+        try {
+            return peleadorRepository.findById(idFigther)
+                    .orElseThrow(() -> new Exception("Peleador no encontrado: " + idFigther));
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
     public List<Peleador> obtenerPeleadores() throws Exception{
         try {
             return peleadorRepository.findAll();
@@ -119,4 +146,5 @@ public class PeleadorService {
             throw new Exception(e);
         }
     }
+
 }
