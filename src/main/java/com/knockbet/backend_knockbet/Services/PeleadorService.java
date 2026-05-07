@@ -1,6 +1,7 @@
 package com.knockbet.backend_knockbet.Services;
 
 import com.knockbet.backend_knockbet.Models.Peleador.*;
+import com.knockbet.backend_knockbet.Models.dto.DtoEditPeleador;
 import com.knockbet.backend_knockbet.Models.dto.DtoPeleador;
 import com.knockbet.backend_knockbet.Reglas.MetricasDeScore;
 import com.knockbet.backend_knockbet.Repository.PeleadorRepository;
@@ -124,6 +125,23 @@ public class PeleadorService {
                 if (peleaService.tienePeleasProgramadas(peleador)) throw new Exception("El peleador esta o tiene una pelea programada");
             }
             peleador.setEstadoActividad(!peleador.isEstadoActividad());
+
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
+    @Transactional
+    public void actulizarDatosPeleador(DtoEditPeleador dtoEditPeleador) throws Exception{
+        try {
+            Peleador peleador = obtenerPeladorId(dtoEditPeleador.id());
+
+            peleador.setNombre(dtoEditPeleador.nombre());
+            peleador.setApodo(dtoEditPeleador.apodo());
+            peleador.getFisicoData().setPeso(dtoEditPeleador.peso());
+            peleador.getFisicoData().setAltura(dtoEditPeleador.altura());
+            peleador.getFisicoData().setAlcance(dtoEditPeleador.alcance());
+            peleador.getFisicoData().setEdad(dtoEditPeleador.edad());
 
         }catch (Exception e){
             throw new Exception(e);

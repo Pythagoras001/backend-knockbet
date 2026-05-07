@@ -1,6 +1,7 @@
 package com.knockbet.backend_knockbet.Controllers;
 
 import com.knockbet.backend_knockbet.Models.Peleador.Peleador;
+import com.knockbet.backend_knockbet.Models.dto.DtoEditPeleador;
 import com.knockbet.backend_knockbet.Models.dto.DtoPeleador;
 import com.knockbet.backend_knockbet.Services.PeleadorService;
 import lombok.AllArgsConstructor;
@@ -56,6 +57,17 @@ public class PeleadorController {
         }
     }
 
+    @PutMapping("/edit")
+    public ResponseEntity<?> editarPeleador(@RequestBody DtoEditPeleador dtoEditPeleador){
+        try {
+            peleadorService.actulizarDatosPeleador(dtoEditPeleador);
+            return ResponseEntity.ok().build();
 
+        } catch (Exception e){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("No fue posible Editar el peleador");
+        }
+    }
 
 }
