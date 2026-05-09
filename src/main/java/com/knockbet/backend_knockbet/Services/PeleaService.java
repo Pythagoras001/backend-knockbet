@@ -1,6 +1,7 @@
 package com.knockbet.backend_knockbet.Services;
 
 import com.knockbet.backend_knockbet.Events.InicioPeleaEvent;
+import com.knockbet.backend_knockbet.Events.ResultadoPeleaEvent;
 import com.knockbet.backend_knockbet.Models.EstrucApuesta.Apuesta;
 import com.knockbet.backend_knockbet.Models.EstrucApuesta.EstadoApuesta;
 import com.knockbet.backend_knockbet.Models.EstrucEncuentro.EstadoPelea;
@@ -34,6 +35,7 @@ public class PeleaService {
     private final ApplicationEventPublisher eventPublisher;
 
     private final PeleadorService peleadorService;
+    private final ApuestaService apuestaService;
 
     public void registrarPelea(DtoPelea dtoPelea) throws Exception{
         try {
@@ -46,7 +48,11 @@ public class PeleaService {
                     .ubicacion(new Ubicacion(dtoPelea.direccion(), dtoPelea.descripcion()))
                     .build();
 
-            peleaRepository.save(peleaProgramada);
+            Pelea peleaPostDb = peleaRepository.save(peleaProgramada);
+
+            if (dtoPelea.asociarApuesta()){
+                apuestaService.registrarApuesta(peleaPostDb.getId());
+            }
 
         }catch (Exception e){
             throw new Exception(e);
@@ -138,6 +144,7 @@ public class PeleaService {
 
             actulizarEstadisticasPeleadores(resultado);
             resultadoRespository.save(resultado);
+            eventPublisher.publishEvent(new ResultadoPeleaEvent(resultado));
 
         }catch (Exception e){
             throw new Exception(e);

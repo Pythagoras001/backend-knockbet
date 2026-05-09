@@ -45,12 +45,14 @@ public class PeleaController {
 
     @PostMapping
     @RequestMapping("/result")
-    public ResponseEntity<Void> finalizarPelea(@RequestBody DtoResultadoApuesta dtoResultadoApuesta) throws Exception{
+    public ResponseEntity<?> finalizarPelea(@RequestBody DtoResultadoApuesta dtoResultadoApuesta) throws Exception{
         try {
             peleaService.finalizarPelea(dtoResultadoApuesta);
             return ResponseEntity.noContent().build();
         }catch (Exception e){
-            throw new Exception(e);
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
         }
     }
 

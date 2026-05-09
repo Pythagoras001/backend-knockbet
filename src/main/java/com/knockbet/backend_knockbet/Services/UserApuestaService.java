@@ -13,6 +13,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class UserApuestaService {
@@ -58,6 +60,15 @@ public class UserApuestaService {
                     + userApuesta.getGanadorEsperado().getEstadisticaAsociada().getPagoTotalPorVictoria()
                     < presupuestoService.verPresupuestoTotalActual() * MetricasDeNegocio.LIMITE_EXP);
 
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
+    public List<UserApuesta> buscarUserApuestasInscritas(Cuota cuota) throws Exception{
+        try {
+            return userApuestaRepository.findAllByGanadorEsperado(cuota)
+                    .orElseThrow(() -> new RuntimeException("No se encontraron apuestas en la cuota de apuesta: " + cuota.getId()));
         }catch (Exception e){
             throw new Exception(e);
         }
