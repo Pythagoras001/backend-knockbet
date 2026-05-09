@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/fight")
 @AllArgsConstructor
@@ -35,8 +37,21 @@ public class PeleaController {
         }catch (Exception e){
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("No fue posible Editar el peleador");
+                    .body("No fue posible Editar la pelea");
         }
     }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<?> cancelarPelea(@PathVariable UUID id){
+        try {
+            peleaService.cancelarPelea(id);
+            return ResponseEntity.noContent().build();
+        }catch (Exception e){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("No fue posible deshabilitar el peleador");
+        }
+    }
+
 
 }

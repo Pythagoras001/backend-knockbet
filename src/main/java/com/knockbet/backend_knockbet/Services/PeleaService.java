@@ -1,13 +1,17 @@
 package com.knockbet.backend_knockbet.Services;
 
+import com.knockbet.backend_knockbet.Models.EstrucApuesta.Apuesta;
+import com.knockbet.backend_knockbet.Models.EstrucApuesta.EstadoApuesta;
 import com.knockbet.backend_knockbet.Models.EstrucEncuentro.EstadoPelea;
 import com.knockbet.backend_knockbet.Models.EstrucEncuentro.Pelea;
 import com.knockbet.backend_knockbet.Models.EstrucEncuentro.Ubicacion;
 import com.knockbet.backend_knockbet.Models.Peleador.Peleador;
 import com.knockbet.backend_knockbet.Models.dto.DtoEditPelea;
 import com.knockbet.backend_knockbet.Models.dto.DtoPelea;
+import com.knockbet.backend_knockbet.Repository.ApuestaRepository;
 import com.knockbet.backend_knockbet.Repository.PeleaRepository;
 import com.knockbet.backend_knockbet.Repository.PeleadorRepository;
+import com.knockbet.backend_knockbet.Repository.UserApuestaRespository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +24,7 @@ import java.util.UUID;
 public class PeleaService {
 
     private final PeleaRepository peleaRepository;
+    private final ApuestaRepository apuestaRepository;
 
     private final PeleadorService peleadorService;
 
@@ -53,6 +58,27 @@ public class PeleaService {
             pelea.setUbicacion(new Ubicacion(dtoEditPelea.direccion(), dtoEditPelea.descripcion()));
 
         }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
+    @Transactional
+    public void cancelarPelea(UUID id) throws Exception{
+        try {
+            Pelea pelea = obtenerPeleaId(id);
+            Apuesta apuestaAsociada = apuestaRepository.findByPelea(pelea);
+
+            if (pelea.getEstadoPelea() == EstadoPelea.CANCELADA) throw new Exception("No se puede cancelar una pelea Finalizada");
+
+            if (apuestaAsociada == null){
+                pelea.setEstadoPelea(EstadoPelea.CANCELADA);
+                return;
+            }
+
+            if (apuestaAsociada.getActivo() != EstadoApuesta.CANCELADA) throw new Exception("Se debe cancelar la apuesta asocicada a la pelea primero");
+            pelea.setEstadoPelea(EstadoPelea.CANCELADA);
+
+        }catch (Exception e) {
             throw new Exception(e);
         }
     }
