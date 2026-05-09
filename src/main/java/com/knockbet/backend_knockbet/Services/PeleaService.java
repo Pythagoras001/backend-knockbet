@@ -5,16 +5,21 @@ import com.knockbet.backend_knockbet.Models.EstrucApuesta.Apuesta;
 import com.knockbet.backend_knockbet.Models.EstrucApuesta.EstadoApuesta;
 import com.knockbet.backend_knockbet.Models.EstrucEncuentro.EstadoPelea;
 import com.knockbet.backend_knockbet.Models.EstrucEncuentro.Pelea;
+import com.knockbet.backend_knockbet.Models.EstrucEncuentro.Resultado;
 import com.knockbet.backend_knockbet.Models.EstrucEncuentro.Ubicacion;
+import com.knockbet.backend_knockbet.Models.Peleador.Peleador;
 import com.knockbet.backend_knockbet.Models.dto.DtoEditPelea;
 import com.knockbet.backend_knockbet.Models.dto.DtoPelea;
+import com.knockbet.backend_knockbet.Models.dto.DtoResultadoApuesta;
 import com.knockbet.backend_knockbet.Repository.ApuestaRepository;
 import com.knockbet.backend_knockbet.Repository.PeleaRepository;
+import com.knockbet.backend_knockbet.Repository.ResultadoRespository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,6 +29,7 @@ public class PeleaService {
 
     private final PeleaRepository peleaRepository;
     private final ApuestaRepository apuestaRepository;
+    private final ResultadoRespository resultadoRespository;
 
     private final ApplicationEventPublisher eventPublisher;
 
@@ -91,6 +97,68 @@ public class PeleaService {
             if (peleaEncontrada.getEstadoPelea() != EstadoPelea.PROGRAMADA) throw new Exception("Para iniciar una pelea debe estar programada");
             peleaEncontrada.setEstadoPelea(EstadoPelea.EN_DUELO);
             eventPublisher.publishEvent(new InicioPeleaEvent(peleaEncontrada));
+
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
+    public void finalizarPelea(DtoResultadoApuesta dtoResultadoApuesta) throws Exception{
+        try {
+            Pelea peleaEncontrada = obtenerPeleaId(dtoResultadoApuesta.pelea());
+            if (peleaEncontrada.getEstadoPelea() != EstadoPelea.EN_DUELO) throw new Exception("No se puede finalizar una pelea q no esta en duelo");
+            peleaEncontrada.setEstadoPelea(EstadoPelea.FINALIZADA);
+
+            definirResultadoPelea(peleaEncontrada, dtoResultadoApuesta);
+
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
+    private void definirResultadoPelea(Pelea pelea, DtoResultadoApuesta dtoResultadoApuesta) throws Exception{
+        try {
+            Peleador peleadorGanador = null;
+            Peleador peleadorPerdedor = null;
+
+            if (!dtoResultadoApuesta.empate()){
+                peleadorGanador = pelea.getPeleadorA().getId().equals(dtoResultadoApuesta.peleadorGanador())
+                        ? pelea.getPeleadorA() : pelea.getPeleadorB();
+
+                peleadorPerdedor = pelea.getPeleadorA().getId().equals(dtoResultadoApuesta.peleadorGanador())
+                        ? pelea.getPeleadorB() : pelea.getPeleadorA();
+            }
+
+            Resultado resultado = Resultado.builder()
+                    .pelea(pelea)
+                    .ganador(peleadorGanador)
+                    .perdedor(peleadorPerdedor)
+                    .horaFinalizacion(LocalDateTime.now())
+                    .build();
+
+            actulizarEstadisticasPeleadores(resultado);
+            resultadoRespository.save(resultado);
+
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
+    private void actulizarEstadisticasPeleadores(Resultado resultado) throws Exception{
+        try {
+            Peleador peleadorGanador = resultado.getGanador();
+            Peleador peleadorPerdedor = resultado.getPerdedor();
+
+            resultado.getPelea().getPeleadorA().getActividadData().actulizarEstadistica(resultado);
+            resultado.getPelea().getPeleadorB().getActividadData().actulizarEstadistica(resultado);
+
+            if (peleadorGanador == null && peleadorPerdedor == null){
+                resultado.getPelea().getPeleadorA().getHistorialData().actulizarEstadisticaEmpate();
+                resultado.getPelea().getPeleadorB().getHistorialData().actulizarEstadisticaEmpate();
+            }else {
+                peleadorGanador.getHistorialData().actulizarEstadisticaVictoria();
+                peleadorPerdedor.getHistorialData().actulizarEstadisticaDerrota();
+            }
 
         }catch (Exception e){
             throw new Exception(e);

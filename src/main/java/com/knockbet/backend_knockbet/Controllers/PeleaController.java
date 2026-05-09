@@ -2,6 +2,7 @@ package com.knockbet.backend_knockbet.Controllers;
 
 import com.knockbet.backend_knockbet.Models.dto.DtoEditPelea;
 import com.knockbet.backend_knockbet.Models.dto.DtoPelea;
+import com.knockbet.backend_knockbet.Models.dto.DtoResultadoApuesta;
 import com.knockbet.backend_knockbet.Services.PeleaService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,17 @@ public class PeleaController {
             return ResponseEntity
                     .badRequest()
                     .body(e.getMessage());
+        }
+    }
+
+    @PostMapping
+    @RequestMapping("/result")
+    public ResponseEntity<Void> finalizarPelea(@RequestBody DtoResultadoApuesta dtoResultadoApuesta) throws Exception{
+        try {
+            peleaService.finalizarPelea(dtoResultadoApuesta);
+            return ResponseEntity.noContent().build();
+        }catch (Exception e){
+            throw new Exception(e);
         }
     }
 
