@@ -30,6 +30,7 @@ public class ApuestaService {
             Pelea peleaEncontrada = peleaRepository.findById(fightId)
                     .orElseThrow(() -> new Exception("Pelea no encontrada: " + fightId));
 
+            if (apuestaRepository.findByPelea(peleaEncontrada) != null) throw new Exception("La pelea ya cuenta con una apuesta asociada");
             if (peleaEncontrada.getEstadoPelea() != EstadoPelea.PROGRAMADA) throw new Exception("Para asignar una apuesta a una pelea solo puede estar programada");
 
             PrediccionResultadoPelea prediccionResultadoPelea = scoreService.calcularProbabilidadDeVictoria(peleaEncontrada);
