@@ -59,7 +59,14 @@ public class ApuestaService {
         }
     }
 
-
+    public Apuesta buscarApuesta(UUID idApuesta) throws Exception{
+        try {
+            return apuestaRepository.findById(idApuesta)
+                    .orElseThrow(() -> new Exception("Apuesta no Encontrada"));
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
 
 
 }

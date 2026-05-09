@@ -2,6 +2,7 @@ package com.knockbet.backend_knockbet.Controllers;
 
 import com.knockbet.backend_knockbet.Models.EstrucApuesta.Apuesta;
 import com.knockbet.backend_knockbet.Models.EstrucApuesta.UserApuesta;
+import com.knockbet.backend_knockbet.Models.dto.DtoUserApuesta;
 import com.knockbet.backend_knockbet.Services.ApuestaService;
 import com.knockbet.backend_knockbet.Services.UserApuestaService;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class ApuestaController {
 
     private final ApuestaService apuestaService;
+    private final UserApuestaService userApuestaService;
 
     @GetMapping
     public ResponseEntity<?> obtenerApuestas() throws Exception{
@@ -43,6 +45,18 @@ public class ApuestaController {
         }
     }
 
+    @PostMapping
+    @RequestMapping("/stake")
+    public ResponseEntity<?> apostar(@RequestBody DtoUserApuesta dtoUserApuesta) throws Exception{
+        try {
+            userApuestaService.apostarPorGanador(dtoUserApuesta);
+            return ResponseEntity.noContent().build();
+        }catch (Exception e){
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
+    }
 
 
 }
