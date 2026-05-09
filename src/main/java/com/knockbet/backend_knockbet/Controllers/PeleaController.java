@@ -29,6 +29,19 @@ public class PeleaController {
         }
     }
 
+    @PostMapping
+    @RequestMapping("{fightId}/start")
+    public ResponseEntity<?> iniciarPelea(@PathVariable UUID fightId){
+        try {
+            peleaService.iniciarPelea(fightId);
+            return ResponseEntity.noContent().build();
+        }catch (Exception e){
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
+    }
+
     @PutMapping("/edit")
     public ResponseEntity<?> editarPelea(@RequestBody DtoEditPelea dtoEditPelea){
         try {

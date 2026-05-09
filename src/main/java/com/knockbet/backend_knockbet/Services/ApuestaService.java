@@ -1,7 +1,9 @@
 package com.knockbet.backend_knockbet.Services;
 
+import com.knockbet.backend_knockbet.Events.InicioPeleaEvent;
 import com.knockbet.backend_knockbet.Models.EstrucApuesta.Apuesta;
 import com.knockbet.backend_knockbet.Models.EstrucApuesta.Cuota;
+import com.knockbet.backend_knockbet.Models.EstrucApuesta.EstadoApuesta;
 import com.knockbet.backend_knockbet.Models.EstrucEncuentro.EstadoPelea;
 import com.knockbet.backend_knockbet.Models.EstrucEncuentro.Pelea;
 import com.knockbet.backend_knockbet.Models.EstrucPredictSystem.PrediccionResultadoPelea;
@@ -9,9 +11,11 @@ import com.knockbet.backend_knockbet.Models.EstrucPredictSystem.TasaRecomendada;
 import com.knockbet.backend_knockbet.Repository.ApuestaRepository;
 import com.knockbet.backend_knockbet.Repository.PeleaRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -59,6 +63,22 @@ public class ApuestaService {
         }
     }
 
+    @EventListener
+    public void cerrarApuesta(InicioPeleaEvent event) throws Exception{
+        try {
+            Optional<Apuesta> apuestaOpt = buscarApuestaPorPelea(event.pelea());
+            if (apuestaOpt.isEmpty()) return;
+
+            Apuesta apuestaEncontrada = apuestaOpt.get();
+
+            if (apuestaEncontrada.getActivo() != EstadoApuesta.ABIERTA) throw new Exception("Para finalizar una apuesta debe estar disponible");
+            apuestaEncontrada.setActivo(EstadoApuesta.CERRADA);
+
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
     public Apuesta buscarApuesta(UUID idApuesta) throws Exception{
         try {
             return apuestaRepository.findById(idApuesta)
@@ -68,5 +88,8 @@ public class ApuestaService {
         }
     }
 
+    public Optional<Apuesta> buscarApuestaPorPelea(Pelea pelea) throws Exception{
+        return Optional.ofNullable(apuestaRepository.findByPelea(pelea));
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.knockbet.backend_knockbet.Services;
 
+import com.knockbet.backend_knockbet.Events.InicioPeleaEvent;
 import com.knockbet.backend_knockbet.Models.EstrucApuesta.Apuesta;
 import com.knockbet.backend_knockbet.Models.EstrucApuesta.EstadoApuesta;
 import com.knockbet.backend_knockbet.Models.EstrucEncuentro.EstadoPelea;
@@ -11,6 +12,7 @@ import com.knockbet.backend_knockbet.Repository.ApuestaRepository;
 import com.knockbet.backend_knockbet.Repository.PeleaRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +24,8 @@ public class PeleaService {
 
     private final PeleaRepository peleaRepository;
     private final ApuestaRepository apuestaRepository;
+
+    private final ApplicationEventPublisher eventPublisher;
 
     private final PeleadorService peleadorService;
 
@@ -76,6 +80,19 @@ public class PeleaService {
             pelea.setEstadoPelea(EstadoPelea.CANCELADA);
 
         }catch (Exception e) {
+            throw new Exception(e);
+        }
+    }
+
+    @Transactional
+    public void iniciarPelea(UUID idPelea) throws Exception{
+        try {
+            Pelea peleaEncontrada = obtenerPeleaId(idPelea);
+            if (peleaEncontrada.getEstadoPelea() != EstadoPelea.PROGRAMADA) throw new Exception("Para iniciar una pelea debe estar programada");
+            peleaEncontrada.setEstadoPelea(EstadoPelea.EN_DUELO);
+            eventPublisher.publishEvent(new InicioPeleaEvent(peleaEncontrada));
+
+        }catch (Exception e){
             throw new Exception(e);
         }
     }
