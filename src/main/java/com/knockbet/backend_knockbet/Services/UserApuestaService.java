@@ -33,7 +33,7 @@ public class UserApuestaService {
             Cuota cuota = getCuota(dtoUserApuesta, apuestaEncontrada);
 
             UserApuesta userApuesta = UserApuesta.builder()
-                    .apostador(new Apostador(dtoUserApuesta.nombreApostador(), dtoUserApuesta.cedula(), dtoUserApuesta.celular()))
+                    .apostador(new Apostador(dtoUserApuesta.nombreApostador(), dtoUserApuesta.cedula(), dtoUserApuesta.celular(), dtoUserApuesta.correo()))
                     .apuesta(apuestaEncontrada)
                     .ganadorEsperado(cuota)
                     .valorApostado(dtoUserApuesta.valorApostado())
