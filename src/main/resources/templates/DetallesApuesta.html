@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Apuesta Confirmada - KnockBet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style type="text/css">
+    /* Estilos base para clientes que soportan bloques de estilo */
+    body { margin: 0; padding: 0; min-width: 100%; font-family: 'Inter', Helvetica, Arial, sans-serif; background-color: #0e0e0e; color: #ffffff; }
+    img { display: block; height: auto; line-height: 100%; border: 0; outline: none; text-decoration: none; }
+    table { border-collapse: collapse !important; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+
+    /* Efecto Outlined (Gmail lo soporta parcialmente, fallback a color sólido) */
+    .text-outline {
+      -webkit-text-stroke: 1px #ff8f6f;
+      color: transparent !important;
+    }
+
+    /* Responsivo sencillo */
+    @media only screen and (max-width: 600px) {
+      .container { width: 100% !important; }
+      .stack-column { display: block !important; width: 100% !important; padding: 10px 0 !important; }
+      .fighter-img { height: 200px !important; }
+    }
+  </style>
+</head>
+<body style="margin: 0; padding: 0; background-color: #0e0e0e;">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #0e0e0e;">
+  <tr>
+    <td align="center" style="padding: 20px 0;">
+
+      <!-- Main Container -->
+      <table border="0" cellpadding="0" cellspacing="0" width="600" class="container" style="background-color: #0e0e0e;">
+
+        <!-- Header -->
+        <tr>
+          <td style="padding: 20px 30px; display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 24px; font-weight: 800; font-style: italic; color: #ff8f6f; letter-spacing: -1px;">Knock Bet - Oficial</span>
+          </td>
+        </tr>
+
+        <!-- Hero Title -->
+        <tr>
+          <td align="center" style="padding: 40px 30px; background-color: #131313;">
+            <h1 style="margin: 0; font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 60px; font-weight: 800; line-height: 1; letter-spacing: -2px; color: #ffffff; text-transform: uppercase;">
+              APUESTA <br/>
+              <span style="color: #ff8f6f; -webkit-text-stroke: 1px #ff8f6f;">CONFIRMADA</span>
+            </h1>
+            <div style="height: 4px; width: 80px; background-color: #ff8f6f; margin-top: 20px;"></div>
+          </td>
+        </tr>
+
+        <!-- Personal Info Grid -->
+        <tr>
+          <td style="padding: 30px;">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+              <tr>
+                <!-- Nombre -->
+                <td width="48%" style="background-color: #20201f; padding: 15px; border-radius: 8px;">
+                  <p style="margin: 0 0 5px 0; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #adaaaa;">Nombre</p>
+                  <p style="margin: 0; font-size: 14px; font-weight: bold; color: #ffffff;" th:text="${apuesta.apostador.nombre()}"></p>
+                </td>
+                <td width="4%"></td> <!-- Spacer -->
+                <!-- Celular -->
+                <td width="48%" style="background-color: #20201f; padding: 15px; border-radius: 8px;">
+                  <p style="margin: 0 0 5px 0; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #adaaaa;">Celular</p>
+                  <p style="margin: 0; font-size: 14px; font-weight: bold; color: #ffffff;" th:text="${apuesta.apostador.cedula()}"></p>
+                </td>
+              </tr>
+              <tr><td height="15" colspan="3"></td></tr> <!-- Vertical Spacer -->
+              <tr>
+                <!-- Cédula -->
+                <td width="48%" style="background-color: #20201f; padding: 15px; border-radius: 8px;">
+                  <p style="margin: 0 0 5px 0; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #adaaaa;">Cédula</p>
+                  <p style="margin: 0; font-size: 14px; font-weight: bold; color: #ffffff;" th:text="${apuesta.apostador.cedula()}"></p>
+                </td>
+                <td width="4%"></td> <!-- Spacer -->
+                <!-- Correo -->
+                <td width="48%" style="background-color: #20201f; padding: 15px; border-radius: 8px;">
+                  <p style="margin: 0 0 5px 0; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #adaaaa;">Correo</p>
+                  <p style="margin: 0; font-size: 14px; font-weight: bold; color: #ffffff;" th:text="${apuesta.apostador.correo()}"></p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Bet Details (Fighter Card) -->
+        <tr>
+          <td style="padding: 0 30px;">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #262626; border-left: 4px solid #ff8f6f; border-radius: 12px; overflow: hidden;">
+              <tr>
+                <!-- Fighter Image -->
+                <td width="40%" align="center" valign="middle" style="padding:20px;">
+                  <img
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxCQ86X2Eq6wPFLyJEKJaIuXeYJHb7cp5bE8gi-0BUn5V4oMry-fmjs9aP2QGduydwhlK0a0JvoR5eLjfR2q-nDQrUgSq1WVbpsAuxVs4yp5sHJ4SOJRCZguP_i9Wo5xmroPsfBpQbEvpeDuh5guax-p_ewTuxhyLUjcV-woUaSGsISwPHN7Z6fL_hT1RzP_RcyiG_OtTPDYAFlwSxFmQEp-jBjASL_XFn2xN4pLryvlq4b8ktEcPFaFMJv6G17jNitlSKIB0j8jjq"
+                      alt="Peleador"
+                      width="220"
+                      style="
+                      display:block;
+                      width:100%;
+                      max-width:220px;
+                      height:auto;
+                      border-radius:12px;
+                      border:2px solid #dc2626;
+                      "
+                  >
+
+                </td>
+                <!-- Bet Info -->
+                <td width="60%" class="stack-column" style="padding: 25px; vertical-align: top;">
+                  <p style="margin: 0 0 5px 0; font-size: 10px; color: #ff8f6f; text-transform: uppercase; font-weight: bold; letter-spacing: 1.5px;">Selección</p>
+                  <h2 style="margin: 0 0 15px 0; font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 28px; font-weight: bold; line-height: 1; color: #ffffff;" th:text="${apuesta.ganadorEsperado.getPeleador() != null ? apuesta.ganadorEsperado.getPeleador().nombre : 'Empate'}></h2>
+
+                  <div style="border-bottom: 1px solid #484847; padding-bottom: 8px; margin-bottom: 8px;">
+                    <table width="100%">
+                      <tr>
+                        <td style="font-size: 13px; color: #adaaaa;">Cuota de Ganancia</td>
+                        <td align="right" style="font-size: 13px; font-weight: bold; color: #ffffff;" th:text="'X '+${apuesta.rendimientoGananciaAsociada}"></td>
+                      </tr>
+                    </table>
+                  </div>
+                  <div style="border-bottom: 1px solid #484847; padding-bottom: 8px;">
+                    <table width="100%">
+                      <tr>
+                        <td style="font-size: 13px; color: #adaaaa;">Monto Apostado</td>
+                        <td align="right" style="font-size: 13px; font-weight: bold; color: #ffffff;" th:text="'$ ' + ${#numbers.formatDecimal(apuesta.valorApostado, 0, 'POINT', 0, 'COMMA')}"></td>
+                      </tr>
+                    </table>
+                  </div>
+
+                  <div style="margin-top: 25px; text-align: right;">
+                    <p style="margin: 0; font-size: 10px; text-transform: uppercase; color: #adaaaa;">Ganancia Potencial</p>
+                    <p style="margin: 0; font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 36px; font-weight: bold; font-style: italic; color: #ff8f6f; letter-spacing: -1px;" th:text="'$ ' + ${#numbers.formatDecimal(apuesta.totalGananciaPosible, 0, 'POINT', 0, 'COMMA')}"></p>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Event Summary -->
+        <tr>
+          <td style="padding: 30px;">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #1a1a1a; padding: 20px; border-top: 1px solid rgba(255,143,111,0.2);">
+              <tr>
+                <td>
+                  <h3 style="margin: 0 0 10px 0; font-size: 16px; font-weight: bold; text-transform: uppercase; color: #ffffff;" th:text="${apuesta.apuesta.getPelea().getTituloPelea()}+ ' : '+ ${apuesta.apuesta.getPelea().getPeleadorA().nombre} +' VS '+ ${apuesta.apuesta.getPelea().getPeleadorB().nombre}"></h3>
+                  <table width="100%">
+                    <tr>
+                      <td>
+                        <p style="margin: 0; font-size: 9px; color: #adaaaa; text-transform: uppercase;">Fecha</p>
+                        <p style="margin: 0; font-size: 13px; font-weight: bold; color: #ffffff;" th:text="${#temporals.format(apuesta.apuesta.getPelea().fechaPelea, 'dd MMM yyyy - hh:mm a')}"></p>
+                      </td>
+                      <td>
+                        <p style="margin: 0; font-size: 9px; color: #adaaaa; text-transform: uppercase;">Sede</p>
+                        <p style="margin: 0; font-size: 13px; font-weight: bold; color: #ffffff;" th:text="${apuesta.apuesta.getPelea().getUbicacion().dirreccion()}"></p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td align="center" style="padding: 40px 30px; background-color: #131313; border-top: 1px solid #20201f;">
+            <p style="margin: 0 0 20px 0; font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 14px; font-weight: bold; color: #ffffff; letter-spacing: -0.5px;">KNOCKBET OFICIAL</p>
+            <p style="margin: 0 0 20px 0; font-size: 10px; color: #565555; text-transform: uppercase; letter-spacing: 0.5px;">© 2026 KnockBet Editorial. Juega con responsabilidad.</p>
+            <table border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="border: 1px solid #484847; padding: 4px 8px; font-size: 10px; font-weight: bold; color: #ff8f6f; border-radius: 4px;">18+</td>
+                <td width="10"></td>
+                <td style="border: 1px solid #484847; padding: 4px 8px; font-size: 10px; font-weight: bold; color: #ffffff; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Seguridad Total</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

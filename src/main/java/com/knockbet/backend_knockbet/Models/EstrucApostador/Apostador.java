@@ -6,6 +6,7 @@ import jakarta.persistence.Embeddable;
 public record Apostador(
         String nombre,
         String cedula,
-        String celular
+        String celular,
+        String correo
 ) {
 }

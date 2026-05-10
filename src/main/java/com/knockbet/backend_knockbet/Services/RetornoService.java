@@ -19,8 +19,10 @@ import java.util.List;
 public class RetornoService {
 
     private final RetornoRepository retornoRepository;
+
     private final UserApuestaService userApuestaService;
     private final PresupuestoService presupuestoService;
+    private final EmailService emailService;
 
     @EventListener
     @Transactional
@@ -34,6 +36,7 @@ public class RetornoService {
                 try {
                     presupuestoService.actulizarPresupuestoPorApuesta(userApuesta);
                     Retorno retorno = new Retorno(userApuesta);
+                    emailService.enviarVictoriaApuestaMail(userApuesta);
                     return retorno;
                 } catch (Exception e) {
                     throw new RuntimeException(e);
@@ -57,6 +60,7 @@ public class RetornoService {
                     {
                         try {
                             presupuestoService.actulizarPresupuestoPorApuesta(apuestaPerdida);
+                            emailService.enviarPerdidaApuestaMail(apuestaPerdida);
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }

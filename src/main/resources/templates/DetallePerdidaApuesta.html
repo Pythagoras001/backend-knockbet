@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KnocBet Oficial - Resultado del Combate</title>
+    <!--[if mso]>
+    <style type="text/css">
+        body, table, td, a { font-family: Arial, Helvetica, sans-serif !important; }
+    </style>
+    <![endif]-->
+</head>
+<body style="margin: 0; padding: 0; background-color: #0e0e0e; font-family: 'Inter', Arial, sans-serif; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #0e0e0e;">
+    <tr>
+        <td align="center" style="padding: 20px 0;">
+
+            <!-- Main Container (600px) -->
+            <table border="0" cellpadding="0" cellspacing="0" width="600" style="width: 600px; max-width: 600px; background-color: #0e0e0e;">
+
+                <!-- Header -->
+                <tr>
+                    <td style="padding: 20px 30px; border-bottom: 0;">
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <tr>
+                                <td align="left">
+                                    <h1 style="margin: 0; font-family: 'Arial Black', sans-serif; font-size: 24px; font-style: italic; font-weight: 900; color: #ff8f6f; text-transform: uppercase; letter-spacing: -1px;">
+                                        KnockBet Oficial
+                                    </h1>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- Hero Section -->
+                <tr>
+                    <td style="position: relative; background-color: #000000;">
+                        <!-- Gray-scaled Hero Image -->
+                        <img th:src="${heroImageUrl != null ? heroImageUrl : 'https://lh3.googleusercontent.com/aida-public/AB6AXuAtRxMQAkyrLV3aBnszWlfbK7ndF7m8Ti6pcJE7VcrIoiIG1V6UomSAr3cQyUbSz6bRcWDWUwfiAVlC5V3LgXv4twNSRaVc5n3JfBj_odrpbXzBH43v3Qzi0bjRqIdEZ7Mrp2Rc5-09eiHGByJdpJqGj3NGnoobvvB40VTk4vFRXKBUFB-1ClZvC5U8V96d8vV1tAR6dwmjjwmUM-7hsrVfad7dz9WP9Dt9RpHcCGV3PRljupy29uqdYvfDOzddp8oF_zSLIVgAOWq0'}"
+                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtRxMQAkyrLV3aBnszWlfbK7ndF7m8Ti6pcJE7VcrIoiIG1V6UomSAr3cQyUbSz6bRcWDWUwfiAVlC5V3LgXv4twNSRaVc5n3JfBj_odrpbXzBH43v3Qzi0bjRqIdEZ7Mrp2Rc5-09eiHGByJdpJqGj3NGnoobvvB40VTk4vFRXKBUFB-1ClZvC5U8V96d8vV1tAR6dwmjjwmUM-7hsrVfad7dz9WP9Dt9RpHcCGV3PRljupy29uqdYvfDOzddp8oF_zSLIVgAOWq0"
+                             alt="Fighter" width="600" style="display: block; width: 100%; height: auto; filter: grayscale(100%); opacity: 0.6;">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 30px; background-color: #0e0e0e;">
+                        <h2 style="margin: 0; font-family: 'Arial Black', sans-serif; font-size: 48px; font-weight: 900; line-height: 48px; color: #ffffff; text-transform: uppercase; letter-spacing: -2px;">
+                            RESULTADO DE LA<br>
+                            <span style="color: #ff8f6f;">APUESTA</span>
+                        </h2>
+                    </td>
+                </tr>
+
+                <!-- Two-Column Layout -->
+                <tr>
+                    <td style="padding: 0 30px 30px 30px;">
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <tr>
+                                <!-- Sidebar: User Info (40%) -->
+                                <td width="200" align="left" valign="top" style="padding-right: 20px;">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #131313; border-radius: 4px;">
+                                        <tr>
+                                            <td style="padding: 20px;">
+                                                <p style="margin: 0 0 15px 0; font-size: 10px; font-weight: bold; color: #ff8f6f; text-transform: uppercase; letter-spacing: 2px;">INFORMACIÓN PERSONAL</p>
+
+                                                <p style="margin: 0; font-size: 10px; color: #adaaaa; text-transform: uppercase;">NOMBRE</p>
+                                                <p th:text="${apuesta.getApostador().nombre()}" style="margin: 0 0 10px 0; font-size: 14px; font-weight: 600; color: #ffffff;">Carlos Rodríguez</p>
+
+                                                <p style="margin: 0; font-size: 10px; color: #adaaaa; text-transform: uppercase;">CEDULA</p>
+                                                <p th:text="${apuesta.getApostador().cedula()}" style="margin: 0 0 10px 0; font-size: 14px; font-weight: 600; color: #ffffff;">#OCT-992841</p>
+
+                                                <p style="margin: 0; font-size: 10px; color: #adaaaa; text-transform: uppercase;">EMAIL</p>
+                                                <p th:text="${apuesta.getApostador().correo()}" style="margin: 0; font-size: 14px; font-weight: 600; color: #ffffff; word-break: break-all;">c.rodriguez@example.com</p>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-top: 20px; border-left: 4px solid #ff8f6f; background-color: rgba(255, 143, 111, 0.1);">
+                                        <tr>
+                                            <td style="padding: 15px;">
+                                                <p style="margin: 0; font-style: italic; font-weight: bold; color: #ff8f6f; font-size: 16px; line-height: 20px;">
+                                                    "LA GRANDEZA NO SE DEFINE POR NO CAER, SINO POR LEVANTARSE SIEMPRE."
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+
+                                <!-- Main: Bet Details (60%) -->
+                                <td width="340" align="left" valign="top">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #1a1a1a; border-radius: 4px;">
+                                        <tr>
+                                            <td style="padding: 25px;">
+                                                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                                    <tr>
+                                                        <td align="left">
+                                                            <h3 style="margin: 0; font-size: 20px; font-weight: 900; color: #ffffff; text-transform: uppercase;">DETALLES DE LA APUESTA</h3>
+                                                            <p th:text="'Evento: ' + ${apuesta.apuesta.pelea.tituloPelea}" style="margin: 5px 0 0 0; font-size: 12px; color: #adaaaa;">Evento: UFC 299 Main Card</p>
+                                                        </td>
+                                                        <td align="right" valign="top">
+                                                            <span style="background-color: rgba(215, 56, 59, 0.2); color: #ff716c; padding: 4px 8px; font-size: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">PERDIDA</span>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+
+                                                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-top: 30px;">
+                                                    <tr>
+                                                        <td width="50%" style="padding-bottom: 20px;">
+                                                            <p style="margin: 0; font-size: 9px; color: #adaaaa; text-transform: uppercase;">LUCHADOR SELECCIONADO</p>
+                                                            <p th:text="${apuesta.ganadorEsperado.getPeleador() != null ? apuesta.ganadorEsperado.getPeleador().nombre : 'Empate'}" style="margin: 4px 0 0 0; font-size: 16px; font-weight: bold; color: #ffffff;">Alex "Poatan" Pereira</p>
+                                                        </td>
+                                                        <td width="50%" style="padding-bottom: 20px;">
+                                                            <p style="margin: 0; font-size: 9px; color: #adaaaa; text-transform: uppercase;">MONTO APOSTADO</p>
+                                                            <p th:text="'$' + ${#numbers.formatDecimal(apuesta.valorApostado, 0, 'COMMA', 0, 'POINT')}" style="margin: 4px 0 0 0; font-size: 16px; font-weight: bold; color: #ffffff;">$250.00 USD</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="50%">
+                                                            <p style="margin: 0; font-size: 9px; color: #adaaaa; text-transform: uppercase;">CUOTA</p>
+                                                            <p th:text="${apuesta.rendimientoGananciaAsociada}" style="margin: 4px 0 0 0; font-size: 16px; font-weight: bold; color: #ffffff;">1.85</p>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <!-- Next Event Teaser -->
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-top: 15px; background-color: #131313; border-radius: 4px;">
+                                        <tr>
+                                            <td style="padding: 15px;">
+                                                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                                    <tr>
+                                                        <td width="40" align="center" style="background-color: #262626; border-radius: 4px; padding: 10px;">
+                                                            <img src="https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/sports_mma/default/24px.svg" width="20" height="20" style="display: block; filter: invert(70%) sepia(50%) saturate(1000%) hue-rotate(330deg);">
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td align="center" style="padding: 40px 30px; background-color: #131313;">
+                        <h4 style="margin: 0 0 20px 0; font-size: 18px; font-weight: bold; color: #ffffff; text-transform: uppercase;">KnockBet Oficial</h4>
+                        <p style="margin: 0; font-size: 10px; color: #767575;">
+                            &copy; 2025 KnockBet Oficial. JUEGA CON RESPONSABILIDAD.
+                        </p>
+                    </td>
+                </tr>
+
+            </table>
+            <!-- End Main Container -->
+
+        </td>
+    </tr>
+</table>
+</body>
+</html>
