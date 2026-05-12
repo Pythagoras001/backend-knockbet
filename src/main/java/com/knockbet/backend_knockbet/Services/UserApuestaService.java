@@ -74,6 +74,14 @@ public class UserApuestaService {
         }
     }
 
+    public List<UserApuesta> obtenerTodasUserApuestas() throws Exception{
+        try {
+            return userApuestaRepository.findAll();
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
     private Cuota getCuota(DtoUserApuesta dtoUserApuesta, Apuesta apuestaEncontrada) throws Exception {
         Cuota cuota = (apuestaEncontrada.getCuotaPeleadorA().getId().equals(dtoUserApuesta.ganadorEsperado())) ?
                 apuestaEncontrada.getCuotaPeleadorA() : (apuestaEncontrada.getCuotaPeleadorB().getId().equals(dtoUserApuesta.ganadorEsperado()))?

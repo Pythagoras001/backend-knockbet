@@ -23,7 +23,7 @@ public class PresupuestoController {
         }catch (Exception e){
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al obtener los peleadores");
+                    .body("Error al obtener el presupuesto");
         }
     }
 

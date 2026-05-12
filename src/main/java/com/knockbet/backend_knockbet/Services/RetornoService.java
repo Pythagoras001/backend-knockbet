@@ -5,20 +5,27 @@ import com.knockbet.backend_knockbet.Events.GanarApuestaEvent;
 import com.knockbet.backend_knockbet.Events.PerderApuestaEvent;
 import com.knockbet.backend_knockbet.Models.EstrucApuesta.ResultadoCuota;
 import com.knockbet.backend_knockbet.Models.EstrucApuesta.UserApuesta;
+import com.knockbet.backend_knockbet.Models.EstrucPagoApuesta.EstadoRetorno;
+import com.knockbet.backend_knockbet.Models.EstrucPagoApuesta.Factura;
 import com.knockbet.backend_knockbet.Models.EstrucPagoApuesta.Retorno;
+import com.knockbet.backend_knockbet.Models.dto.DtoPago;
+import com.knockbet.backend_knockbet.Repository.FacturaRepository;
 import com.knockbet.backend_knockbet.Repository.RetornoRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
 public class RetornoService {
 
     private final RetornoRepository retornoRepository;
+    private final FacturaRepository facturaRepository;
 
     private final UserApuestaService userApuestaService;
     private final PresupuestoService presupuestoService;
@@ -72,6 +79,27 @@ public class RetornoService {
         }
     }
 
+    @Transactional
+    public void pagarApuesta(DtoPago dtoPago) throws Exception{
+        try {
+            Retorno retorno = obtenerRetornoId(dtoPago.idRetorno());
+            if (retorno.getEstadoRetorno() != EstadoRetorno.PENDIENTE) throw new Exception("No se puede pagar un retorno pagado");
+
+            retorno.setEstadoRetorno(EstadoRetorno.PAGADO);
+
+            Factura factura = Factura.builder()
+                    .retorno(retorno)
+                    .fechaPago(LocalDateTime.now())
+                    .metodoPago(dtoPago.metodoPago())
+                    .build();
+
+            facturaRepository.save(factura);
+
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
     public List<Retorno> obtnerRetornos() throws Exception{
         try {
             return retornoRepository.findAll();
@@ -79,5 +107,15 @@ public class RetornoService {
             throw new Exception(e);
         }
     }
+
+    public Retorno obtenerRetornoId(UUID id) throws Exception{
+        try {
+            return retornoRepository.findById(id)
+                    .orElseThrow(() -> new Exception("Retorno no encontrado: " + id));
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
 
 }

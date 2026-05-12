@@ -32,6 +32,19 @@ public class ApuestaController {
         }
     }
 
+    @GetMapping
+    @RequestMapping("/user")
+    public ResponseEntity<?> obtenerTodasUserApuestas() throws Exception{
+        try {
+            List<UserApuesta> userApuestas = userApuestaService.obtenerTodasUserApuestas();
+            return ResponseEntity.ok(userApuestas);
+        }catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
+    }
+
     @PostMapping
     @RequestMapping("/{fightId}")
     public ResponseEntity<?> publicarApuesta(@PathVariable UUID fightId) throws Exception{

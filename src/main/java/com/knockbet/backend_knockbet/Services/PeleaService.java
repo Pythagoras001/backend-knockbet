@@ -181,4 +181,27 @@ public class PeleaService {
         }
     }
 
+    public List<Pelea> obtenerPeleas()throws Exception{
+        try {
+            return peleaRepository.findAllByOrderByFechaPeleaDesc();
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
+    public List<Pelea> obtenerPeleasLibres() throws Exception{
+        try {
+            return peleaRepository.findPeleasSinApuesta();
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
+    public List<Resultado> obtenerResultados() throws Exception{
+        try {
+            return resultadoRespository.findAll();
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
 }

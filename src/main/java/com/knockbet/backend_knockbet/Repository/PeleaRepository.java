@@ -23,4 +23,14 @@ public interface PeleaRepository extends JpaRepository<Pelea, UUID> {
             @Param("peleador") Peleador peleador,
             @Param("estados") List<EstadoPelea> estados
     );
+
+    @Query("""
+            select p
+            from Pelea p
+            where p not in (select a.pelea from Apuesta a)
+            order by p.fechaPelea desc
+            """)
+    List<Pelea> findPeleasSinApuesta();
+
+    List<Pelea> findAllByOrderByFechaPeleaDesc();
 }

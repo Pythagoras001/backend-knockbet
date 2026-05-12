@@ -1,5 +1,7 @@
 package com.knockbet.backend_knockbet.Controllers;
 
+import com.knockbet.backend_knockbet.Models.EstrucEncuentro.Pelea;
+import com.knockbet.backend_knockbet.Models.EstrucEncuentro.Resultado;
 import com.knockbet.backend_knockbet.Models.dto.DtoEditPelea;
 import com.knockbet.backend_knockbet.Models.dto.DtoPelea;
 import com.knockbet.backend_knockbet.Models.dto.DtoResultadoApuesta;
@@ -9,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -17,6 +20,44 @@ import java.util.UUID;
 public class PeleaController {
 
     private final PeleaService peleaService;
+
+
+    @GetMapping
+    public ResponseEntity<?> obtnerPeleas() throws Exception{
+        try {
+            List<Pelea> peleaList = peleaService.obtenerPeleas();
+            return ResponseEntity.ok(peleaList);
+        }catch (Exception e){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al obtener las peleas");
+        }
+    }
+
+    @GetMapping("/free")
+    public ResponseEntity<?> obtenerPeleasSinApuesta() throws Exception{
+        try {
+            List<Pelea> peleaList = peleaService.obtenerPeleasLibres();
+            return ResponseEntity.ok(peleaList);
+        }catch (Exception e){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al obtener los peleadores");
+        }
+    }
+
+    @GetMapping
+    @RequestMapping("/results")
+    public ResponseEntity<?> obtenerResultadosPelea() throws Exception{
+        try {
+            List<Resultado> resultados = peleaService.obtenerResultados();
+            return ResponseEntity.ok(resultados);
+        }catch (Exception e){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al obtener los Resultados");
+        }
+    }
 
     @PostMapping
     public ResponseEntity<?> registrarPelea(@RequestBody DtoPelea dtoPelea){
