@@ -4,6 +4,7 @@ package com.knockbet.backend_knockbet.Services;
 import com.knockbet.backend_knockbet.Events.GanarApuestaEvent;
 import com.knockbet.backend_knockbet.Events.NuevaUserApuesta;
 import com.knockbet.backend_knockbet.Models.EstrucApuesta.UserApuesta;
+import com.knockbet.backend_knockbet.Models.Peleador.Peleador;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
+
+import java.io.File;
 
 @Service
 @AllArgsConstructor
@@ -25,7 +28,6 @@ public class EmailService {
     public void enviarInfoApuestaMail(NuevaUserApuesta event) throws MessagingException {
         Context context = new Context();
         context.setVariable("apuesta", event.userApuesta());
-
         String html = templateEngine.process("DetallesApuesta", context);
 
         MimeMessage message = mailSender.createMimeMessage();
