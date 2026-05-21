@@ -24,6 +24,9 @@ public class Peleador {
     @Column(columnDefinition = "CHAR(36)")
     private UUID id;
 
+    @Column(name = "imgUrl")
+    private String imgUrl;
+
     @Column(name = "nombre")
     private String nombre;
 

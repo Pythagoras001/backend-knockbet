@@ -108,6 +108,14 @@ public class RetornoService {
         }
     }
 
+    public List<Factura> obtenerFacturas() throws Exception{
+        try {
+            return facturaRepository.findAll();
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
     public Retorno obtenerRetornoId(UUID id) throws Exception{
         try {
             return retornoRepository.findById(id)

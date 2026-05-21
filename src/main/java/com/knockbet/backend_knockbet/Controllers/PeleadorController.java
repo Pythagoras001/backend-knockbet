@@ -6,8 +6,10 @@ import com.knockbet.backend_knockbet.Models.dto.DtoPeleador;
 import com.knockbet.backend_knockbet.Services.PeleadorService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,10 +33,10 @@ public class PeleadorController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> registrarPeleador(@RequestBody DtoPeleador dtoPeleador) throws Exception{
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> registrarPeleador(@ModelAttribute DtoPeleador dtoPeleador, @RequestParam MultipartFile img) throws Exception{
         try {
-            peleadorService.registrarPeleador(dtoPeleador);
+            peleadorService.registrarPeleador(dtoPeleador, img);
             return ResponseEntity.noContent().build();
 
         }catch (IllegalArgumentException e) {

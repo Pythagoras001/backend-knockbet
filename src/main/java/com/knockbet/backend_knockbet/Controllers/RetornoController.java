@@ -1,5 +1,6 @@
 package com.knockbet.backend_knockbet.Controllers;
 
+import com.knockbet.backend_knockbet.Models.EstrucPagoApuesta.Factura;
 import com.knockbet.backend_knockbet.Models.EstrucPagoApuesta.Retorno;
 import com.knockbet.backend_knockbet.Models.dto.DtoPago;
 import com.knockbet.backend_knockbet.Services.RetornoService;
@@ -23,6 +24,19 @@ public class RetornoController {
         try {
             List<Retorno> retornoList = retornoService.obtnerRetornos();
             return ResponseEntity.ok(retornoList);
+        }catch (Exception e){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al obtener Retornos");
+        }
+    }
+
+    @GetMapping
+    @RequestMapping("/bill")
+    public ResponseEntity<?> obtenerFacturas() throws Exception{
+        try {
+            List<Factura> facturas = retornoService.obtenerFacturas();
+            return ResponseEntity.ok(facturas);
         }catch (Exception e){
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)

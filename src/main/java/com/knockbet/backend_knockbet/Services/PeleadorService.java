@@ -10,7 +10,12 @@ import com.knockbet.backend_knockbet.Repository.PeleadorRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,17 +26,17 @@ public class PeleadorService {
     private final PeleadorRepository peleadorRepository;
     private final PeleaRepository peleaRepository;
 
-    public void registrarPeleador(DtoPeleador dtoPeleador) throws Exception{
+    public void registrarPeleador(DtoPeleador dtoPeleador, MultipartFile img) throws Exception{
         try {
-            if (dtoPeleador.esNuevo()) registrarPeleadorNovato(dtoPeleador);
-            else registrarPeleadorExperiencia(dtoPeleador);
+            if (dtoPeleador.esNuevo()) registrarPeleadorNovato(dtoPeleador, img);
+            else registrarPeleadorExperiencia(dtoPeleador, img);
 
         }catch (Exception e){
             throw new Exception(e);
         }
     }
 
-    private void registrarPeleadorNovato(DtoPeleador dtoPeleador) throws Exception{
+    private void registrarPeleadorNovato(DtoPeleador dtoPeleador, MultipartFile img) throws Exception{
         try {
             CategoriaPeso categoriaPeso = CategoriaPeso.calcularTipoPeso(dtoPeleador.peso());
 
@@ -58,6 +63,7 @@ public class PeleadorService {
                     .build();
 
             Peleador peleador = Peleador.builder()
+                    .imgUrl(registrarImgPeleador(dtoPeleador.nombre(), img))
                     .nombre(dtoPeleador.nombre())
                     .apodo(dtoPeleador.apodo())
                     .genero(dtoPeleador.genero())
@@ -74,7 +80,7 @@ public class PeleadorService {
         }
     }
 
-    private void registrarPeleadorExperiencia(DtoPeleador dtoPeleador) throws Exception{
+    private void registrarPeleadorExperiencia(DtoPeleador dtoPeleador, MultipartFile img) throws Exception{
         try {
             CategoriaPeso categoriaPeso = CategoriaPeso.calcularTipoPeso(dtoPeleador.peso());
 
@@ -103,6 +109,7 @@ public class PeleadorService {
                     .build();
 
             Peleador peleador = Peleador.builder()
+                    .imgUrl(registrarImgPeleador(dtoPeleador.nombre(), img))
                     .nombre(dtoPeleador.nombre())
                     .apodo(dtoPeleador.apodo())
                     .genero(dtoPeleador.genero())
@@ -116,6 +123,22 @@ public class PeleadorService {
         }catch (Exception e){
             throw new Exception(e);
         }
+    }
+
+    private String registrarImgPeleador(String nombrePeleador, MultipartFile img) throws IOException {
+
+        String fileName = nombrePeleador + "_" + UUID.randomUUID();
+
+        Path uploadPath = Paths.get("uploads");
+
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        Path filePath = uploadPath.resolve(fileName);
+        Files.copy(img.getInputStream(), filePath);
+
+        return "/uploads/" + fileName;
     }
 
     @Transactional
