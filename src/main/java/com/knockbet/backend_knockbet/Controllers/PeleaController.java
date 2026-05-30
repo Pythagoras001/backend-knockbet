@@ -6,6 +6,7 @@ import com.knockbet.backend_knockbet.Models.dto.DtoEditPelea;
 import com.knockbet.backend_knockbet.Models.dto.DtoPelea;
 import com.knockbet.backend_knockbet.Models.dto.DtoResultadoApuesta;
 import com.knockbet.backend_knockbet.Services.PeleaService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,104 +22,56 @@ public class PeleaController {
 
     private final PeleaService peleaService;
 
-
     @GetMapping
     public ResponseEntity<?> obtnerPeleas() throws Exception{
-        try {
-            List<Pelea> peleaList = peleaService.obtenerPeleas();
-            return ResponseEntity.ok(peleaList);
-        }catch (Exception e){
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al obtener las peleas");
-        }
+        List<Pelea> peleaList = peleaService.obtenerPeleas();
+        return ResponseEntity.ok(peleaList);
     }
 
     @GetMapping("/free")
     public ResponseEntity<?> obtenerPeleasSinApuesta() throws Exception{
-        try {
-            List<Pelea> peleaList = peleaService.obtenerPeleasLibres();
-            return ResponseEntity.ok(peleaList);
-        }catch (Exception e){
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al obtener los peleadores");
-        }
+        List<Pelea> peleaList = peleaService.obtenerPeleasLibres();
+        return ResponseEntity.ok(peleaList);
     }
 
     @GetMapping
     @RequestMapping("/results")
     public ResponseEntity<?> obtenerResultadosPelea() throws Exception{
-        try {
-            List<Resultado> resultados = peleaService.obtenerResultados();
-            return ResponseEntity.ok(resultados);
-        }catch (Exception e){
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al obtener los Resultados");
-        }
+        List<Resultado> resultados = peleaService.obtenerResultados();
+        return ResponseEntity.ok(resultados);
     }
 
     @PostMapping
-    public ResponseEntity<?> registrarPelea(@RequestBody DtoPelea dtoPelea){
-        try {
-            peleaService.registrarPelea(dtoPelea);
-            return ResponseEntity.noContent().build();
-        }catch (Exception e){
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
-        }
+    public ResponseEntity<?> registrarPelea(@Valid @RequestBody DtoPelea dtoPelea) throws Exception{
+        peleaService.registrarPelea(dtoPelea);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping
     @RequestMapping("{fightId}/start")
-    public ResponseEntity<?> iniciarPelea(@PathVariable UUID fightId){
-        try {
-            peleaService.iniciarPelea(fightId);
-            return ResponseEntity.noContent().build();
-        }catch (Exception e){
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
-        }
+    public ResponseEntity<?> iniciarPelea(@PathVariable UUID fightId) throws Exception{
+        peleaService.iniciarPelea(fightId);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping
     @RequestMapping("/result")
-    public ResponseEntity<?> finalizarPelea(@RequestBody DtoResultadoApuesta dtoResultadoApuesta) throws Exception{
-        try {
-            peleaService.finalizarPelea(dtoResultadoApuesta);
-            return ResponseEntity.noContent().build();
-        }catch (Exception e){
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
-        }
+    public ResponseEntity<?> finalizarPelea(@Valid @RequestBody DtoResultadoApuesta dtoResultadoApuesta) throws Exception{
+        peleaService.finalizarPelea(dtoResultadoApuesta);
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/edit")
-    public ResponseEntity<?> editarPelea(@RequestBody DtoEditPelea dtoEditPelea){
-        try {
-            peleaService.editarPelea(dtoEditPelea);
-            return ResponseEntity.noContent().build();
-        }catch (Exception e){
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("No fue posible Editar la pelea");
-        }
+    public ResponseEntity<?> editarPelea(@Valid @RequestBody DtoEditPelea dtoEditPelea) throws Exception{
+        peleaService.editarPelea(dtoEditPelea);
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}/status")
-    public ResponseEntity<?> cancelarPelea(@PathVariable UUID id){
-        try {
-            peleaService.cancelarPelea(id);
-            return ResponseEntity.noContent().build();
-        }catch (Exception e){
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("No fue posible deshabilitar el peleador");
-        }
+    public ResponseEntity<?> cancelarPelea(@PathVariable UUID id) throws Exception{
+        peleaService.cancelarPelea(id);
+        return ResponseEntity.noContent().build();
+
     }
 
 

@@ -85,7 +85,7 @@ public class ScoreService {
             // --- ESCALA LOGÍSTICA (CLAVE) ---
             double probABase = 1 / (1 + Math.exp((eloB - eloA) * MetricasDeScore.ESCALA_LOGISTICA));
 
-            // --- EMPATE (MEJORADO) ---
+            // --- EMPATE ---
             double diferencia = Math.abs(eloA - eloB);
 
             double baseEmpate = MetricasDeScore.PROB_BASE_EMPATE;

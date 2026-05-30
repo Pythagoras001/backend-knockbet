@@ -4,6 +4,7 @@ import com.knockbet.backend_knockbet.Models.EstrucPagoApuesta.Factura;
 import com.knockbet.backend_knockbet.Models.EstrucPagoApuesta.Retorno;
 import com.knockbet.backend_knockbet.Models.dto.DtoPago;
 import com.knockbet.backend_knockbet.Services.RetornoService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,39 +22,21 @@ public class RetornoController {
 
     @GetMapping
     public ResponseEntity<?> obtnerRetornos() throws Exception{
-        try {
-            List<Retorno> retornoList = retornoService.obtnerRetornos();
-            return ResponseEntity.ok(retornoList);
-        }catch (Exception e){
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al obtener Retornos");
-        }
+        List<Retorno> retornoList = retornoService.obtnerRetornos();
+        return ResponseEntity.ok(retornoList);
     }
 
     @GetMapping
     @RequestMapping("/bill")
     public ResponseEntity<?> obtenerFacturas() throws Exception{
-        try {
-            List<Factura> facturas = retornoService.obtenerFacturas();
-            return ResponseEntity.ok(facturas);
-        }catch (Exception e){
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al obtener Retornos");
-        }
+        List<Factura> facturas = retornoService.obtenerFacturas();
+        return ResponseEntity.ok(facturas);
     }
 
     @PostMapping
-    public ResponseEntity<?> pagarRetorno(@RequestBody DtoPago dtoPago){
-        try {
-            retornoService.pagarApuesta(dtoPago);
-            return ResponseEntity.noContent().build();
-        }catch (Exception e){
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
-        }
+    public ResponseEntity<?> pagarRetorno(@Valid @RequestBody DtoPago dtoPago) throws Exception{
+        retornoService.pagarApuesta(dtoPago);
+        return ResponseEntity.noContent().build();
     }
 
 

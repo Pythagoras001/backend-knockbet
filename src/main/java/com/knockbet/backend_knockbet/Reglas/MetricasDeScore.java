@@ -1,6 +1,8 @@
 package com.knockbet.backend_knockbet.Reglas;
 
 public class MetricasDeScore {
+
+
     // --- HISTORIAL ---
     // Suavizado bayesiano para win rate (evita extremos con pocas peleas)
     public static final int K_SMOOTHING = 5;

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class GestorCuotasService {
 
+    private final ScoreService scoreService;
     private final PresupuestoService presupuestoService;
 
     public TasaRecomendada calcularTasaDeRendimientoInicial(PrediccionResultadoPelea prediccionResultadoPelea) throws Exception{
@@ -83,7 +84,7 @@ public class GestorCuotasService {
         cuotaB = Math.min(cuotaB, MetricasDeNegocio.MAX_CUOTA_PELEADOR_B);
         cuotaE = Math.min(cuotaE, MetricasDeNegocio.MAX_CUOTA_EMPATE);
 
-        // 7. Redondeo
+        // 8. Redondeo
         cuotaA = Math.round(cuotaA * 1000.0) / 1000.0;
         cuotaB = Math.round(cuotaB * 1000.0) / 1000.0;
         cuotaE = Math.round(cuotaE * 1000.0) / 1000.0;
@@ -117,5 +118,6 @@ public class GestorCuotasService {
 
         return cuota;
     }
+
 
 }

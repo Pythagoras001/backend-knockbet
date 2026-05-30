@@ -5,6 +5,7 @@ import com.knockbet.backend_knockbet.Models.EstrucApuesta.UserApuesta;
 import com.knockbet.backend_knockbet.Models.dto.DtoUserApuesta;
 import com.knockbet.backend_knockbet.Services.ApuestaService;
 import com.knockbet.backend_knockbet.Services.UserApuestaService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,53 +23,30 @@ public class ApuestaController {
 
     @GetMapping
     public ResponseEntity<?> obtenerApuestas() throws Exception{
-        try {
-            List<Apuesta> apuestas = apuestaService.obtenerApuestas();
-            return ResponseEntity.ok(apuestas);
-        }catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
-        }
+        List<Apuesta> apuestas = apuestaService.obtenerApuestas();
+        return ResponseEntity.ok(apuestas);
     }
 
     @GetMapping
     @RequestMapping("/user")
     public ResponseEntity<?> obtenerTodasUserApuestas() throws Exception{
-        try {
-            List<UserApuesta> userApuestas = userApuestaService.obtenerTodasUserApuestas();
-            return ResponseEntity.ok(userApuestas);
-        }catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
-        }
+        List<UserApuesta> userApuestas = userApuestaService.obtenerTodasUserApuestas();
+        return ResponseEntity.ok(userApuestas);
     }
 
     @PostMapping
     @RequestMapping("/{fightId}")
     public ResponseEntity<?> publicarApuesta(@PathVariable UUID fightId) throws Exception{
-        try {
-            apuestaService.registrarApuesta(fightId);
-            return ResponseEntity.noContent().build();
-        }catch (Exception e){
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
-        }
+        apuestaService.registrarApuesta(fightId);
+        return ResponseEntity.noContent().build();
+
     }
 
     @PostMapping
     @RequestMapping("/stake")
-    public ResponseEntity<?> apostar(@RequestBody DtoUserApuesta dtoUserApuesta) throws Exception{
-        try {
-            userApuestaService.apostarPorGanador(dtoUserApuesta);
-            return ResponseEntity.noContent().build();
-        }catch (Exception e){
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
-        }
+    public ResponseEntity<?> apostar(@Valid @RequestBody DtoUserApuesta dtoUserApuesta) throws Exception{
+        userApuestaService.apostarPorGanador(dtoUserApuesta);
+        return ResponseEntity.noContent().build();
     }
 
 
